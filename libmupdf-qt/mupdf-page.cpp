@@ -315,4 +315,17 @@ QString Page::text(float x0, float y0, float x1, float y1) const
 	return ret;
 }
 
+/**
+ * @brief Return a list of text boxes of the page.
+ *
+ * @note The returned text boxes should be deleteed when they are
+ *       no longer used.
+ */
+QList<TextBox *> Page::textList() const
+{
+	QList<TextBox *> ret;
+
+	return ret;
+}
+
 } // end namespace MuPDF
