@@ -320,12 +320,46 @@ QString Page::text(float x0, float y0, float x1, float y1) const
  *
  * @note The returned text boxes should be deleteed when they are
  *       no longer used.
+ * @note After calling Page::setTransform(), text boxes will change.
+ *       Call this function again to get a updated list of text boxes.
  */
 QList<TextBox *> Page::textList() const
 {
 	QList<TextBox *> ret;
+	TextBox *box;
+	fz_text_block *block;
+	fz_text_line *line;
+	fz_text_span *span;
+
+	for (int block_num = 0; block_num < d->text_page->len; ++block_num) {
+		// get block
+		if (d->text_page->blocks[block_num].type != FZ_PAGE_BLOCK_TEXT) {
+			continue;
+		}
+		block = d->text_page->blocks[block_num].u.text;
+
+		for (line = block->lines; line < block->lines + block->len; ++line) { // lines
+			for (span = line->first_span; span; span = span->next) { // spans
+				box = new TextBox(span);
+				ret << box;
+			}
+		}
+	}
 
 	return ret;
+}
+
+/**
+ * @brief Bounding box.
+ */
+QRectF TextBox::boundingBox() const
+{
+	return m_span
+}
+
+TextBox::TextBox(fz_span *span)
+{
+	m_span = span;
 }
 
 } // end namespace MuPDF

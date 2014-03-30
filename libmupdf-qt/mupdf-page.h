@@ -22,6 +22,9 @@ class Page;
 class Document;
 class TextBox;
 
+/**
+ * @brief A document page.
+ */
 class MUPDF_QT_EXPORT Page
 {
 public:
@@ -42,6 +45,9 @@ private:
 friend class Document;
 };
 
+/**
+ * @brief Text Box.
+ */
 class MUPDF_QT_EXPORT TextBox
 {
 public:
@@ -52,7 +58,9 @@ public:
 	QString text() const;
 	
 private:
-	TextBox(const QString &text, const QRectF &rect);
+	TextBox(fz_span *span);
+
+	fz_span *m_span;
 
 friend class Page;
 }
