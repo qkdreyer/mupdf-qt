@@ -8,6 +8,7 @@
 #ifndef MUPDF_PAGE_H
 #define MUPDF_PAGE_H
 
+#include <QList>
 #include "mupdf-global.h"
 
 class QImage;
@@ -15,6 +16,7 @@ class QString;
 class QRect;
 class QRectF;
 class PagePrivate;
+class TextBoxPrivate;
 
 namespace MuPDF
 {
@@ -58,12 +60,12 @@ public:
 	QString text() const;
 	
 private:
-	TextBox(fz_span *span);
+	TextBox();
 
-	fz_span *m_span;
+	TextBoxPrivate *d;
 
 friend class Page;
-}
+};
 
 } // end namespace MuPDF
 

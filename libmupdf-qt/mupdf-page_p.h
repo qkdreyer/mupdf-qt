@@ -73,4 +73,20 @@ struct info_s
 	fz_pixmap *pixmap;
 };
 
+class TextBoxPrivate
+{
+public:
+	TextBoxPrivate()
+		: text_span(NULL)
+	{
+
+	}
+	inline void setTextSpan(fz_text_span *span)
+	{
+		text_span = span;
+	}
+
+	fz_text_span *text_span;
+};
+
 #endif // end MUPDF_PAGE_P_H

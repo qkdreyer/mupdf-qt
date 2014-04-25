@@ -340,7 +340,8 @@ QList<TextBox *> Page::textList() const
 
 		for (line = block->lines; line < block->lines + block->len; ++line) { // lines
 			for (span = line->first_span; span; span = span->next) { // spans
-				box = new TextBox(span);
+				box = new TextBox;
+				box->d->setTextSpan(span);
 				ret << box;
 			}
 		}
@@ -354,12 +355,11 @@ QList<TextBox *> Page::textList() const
  */
 QRectF TextBox::boundingBox() const
 {
-	return m_span
 }
 
-TextBox::TextBox(fz_span *span)
+TextBox::TextBox()
 {
-	m_span = span;
+	d = new TextBoxPrivate;
 }
 
 } // end namespace MuPDF
