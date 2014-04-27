@@ -54,7 +54,8 @@ class MUPDF_QT_EXPORT TextBox
 {
 public:
 	QRectF boundingBox() const;
-	QRectF charBoundingBox() const;
+	int length() const;
+	QRectF charBoundingBox(int index) const;
 	bool hasSpaceAfter() const;
 	TextBox *nextWord() const;
 	QString text() const;

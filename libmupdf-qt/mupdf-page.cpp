@@ -355,6 +355,36 @@ QList<TextBox *> Page::textList() const
  */
 QRectF TextBox::boundingBox() const
 {
+	fz_rect all = fz_empty_rect, rect;
+
+	for (int i = 0; i < d->text_span->len; ++i) {
+		fz_text_char_bbox(&rect, d->text_span, i);
+		fz_union_rect(&all, &rect);
+	}
+
+	return QRectF(QPointF(all.x0, all.y0), QPointF(all.x1, all.y1));
+}
+
+/**
+ * @brief Length of the TextBox.
+ */
+int TextBox::length() const
+{
+	return d->text_span->len;
+}
+
+/**
+ * @brief Get char bounding box.
+ *
+ * @param index Index of the char(start from 0).
+ */
+QRectF TextBox::charBoundingBox(int index) const
+{
+	fz_rect rect;
+
+	fz_text_char_bbox(&rect, d->text_span, index);
+
+	return QRectF(QPointF(rect.x0, rect.y0), QPointF(rect.x1, rect.y1));
 }
 
 TextBox::TextBox()
