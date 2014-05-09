@@ -1,12 +1,13 @@
 #ifndef MUPDF_LINK_H
 #define MUPDF_LINK_H
 
-#include <QRectF>
-
-class LinkPrivate;
+class QRectF;
+class QString;
 
 namespace MuPDF
 {
+
+class LinkPrivate;
 
 class Link
 {
@@ -16,8 +17,8 @@ public:
 		None = 0,
 		Goto, ///< Goto a position in current file
 		URI, ///< A URI link
-		Launch,
-		Named,
+		Launch, ///< Launch a file (a document or a executable)
+		Named, ///< Named action to perform
 		GotoR ///< Goto a position in another file
 	};
 
@@ -30,8 +31,13 @@ protected:
 	Link(LinkPrivate *linkp) : d(linkp) {}
 
 	LinkPrivate *d;
+
+friend class OutlinePrivate;
 };
 
+/**
+ * @brief Goto a position in current file.
+ */
 class LinkGoto : public Link
 {
 public:
@@ -43,8 +49,13 @@ public:
 
 protected:
 	LinkGoto(LinkPrivate *linkp) : Link(linkp) {}
+
+friend class OutlinePrivate;
 };
 
+/**
+ * @brief A URI link.
+ */
 class LinkURI : public Link
 {
 public:
@@ -54,8 +65,45 @@ public:
 
 private:
 	LinkURI(LinkPrivate *linkp) : Link(linkp) {}
+
+friend class OutlinePrivate;
 };
 
+/**
+ * @brief Launch a file (a document or a executable).
+ */
+class LinkLaunch : public Link
+{
+public:
+	LinkType linkType() const {return Launch;}
+	QString file() const;
+	bool newWindow() const;
+	bool isURI() const;
+
+private:
+	LinkLaunch(LinkPrivate *linkp) : Link(linkp) {}
+	
+friend class OutlinePrivate;
+};
+
+/**
+ * @brief Named action to perform.
+ */
+class LinkNamed : public Link
+{
+public:
+	LinkType linkType() const {return Named;}
+	QString named() const;
+	
+private:
+	LinkNamed(LinkPrivate *linkp) : Link(linkp) {}
+
+friend class OutlinePrivate;
+};
+
+/**
+ * @brief Goto a position in another file.
+ */
 class LinkGotoR : public LinkGoto
 {
 public:
@@ -67,6 +115,8 @@ public:
 
 private:
 	LinkGotoR(LinkPrivate *linkp) : LinkGoto(linkp) {}
+
+friend class OutlinePrivate;
 };
 
 }

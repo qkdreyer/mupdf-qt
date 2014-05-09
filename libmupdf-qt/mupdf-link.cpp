@@ -3,6 +3,7 @@
 extern "C" {
 #include <mupdf/fitz.h>
 }
+#include <QRectF>
 #include <QString>
 
 namespace MuPDF
@@ -22,7 +23,7 @@ QRectF Link::linkArea() const
  */
 int LinkGoto::page() const
 {
-	return d->link->dest.ld.gotor.page;
+	return d->dest.ld.gotor.page;
 }
 
 /**
@@ -30,7 +31,7 @@ int LinkGoto::page() const
  */
 bool LinkGoto::fitHorizontally() const
 {
-	return d->link->dest.ld.gotor.flags & fz_link_flag_fit_h;
+	return d->dest.ld.gotor.flags & fz_link_flag_fit_h;
 }
 
 /**
@@ -38,7 +39,7 @@ bool LinkGoto::fitHorizontally() const
  */
 bool LinkGoto::fitVertically() const
 {
-	return d->link->dest.ld.gotor.flags & fz_link_flag_fit_v;
+	return d->dest.ld.gotor.flags & fz_link_flag_fit_v;
 }
 
 /**
@@ -48,11 +49,60 @@ bool LinkGoto::fitVertically() const
  */
 float LinkGoto::zoom() const
 {
-	if (d->link->dest.ld.gotor.flags & fz_link_flag_r_is_zoom) {
-		return d->link->dest.ld.gotor.rb.x;
+	if (d->dest.ld.gotor.flags & fz_link_flag_r_is_zoom) {
+		return d->dest.ld.gotor.rb.x;
 	}
 
 	return 0.0f;
+}
+
+/**
+ * @brief A UTF-8 encoded URI to launch.
+ */
+QString LinkURI::uri() const
+{
+	return d->dest.ld.uri.uri;
+}
+
+/**
+ * If true, the x and y coords (as ints, in user
+ * space) should be appended to the URI before launch.
+ */
+bool LinkURI::isMap() const
+{
+	return d->dest.ld.uri.is_map;
+}
+
+/**
+ * @brief A UTF-8 file specification to launch.
+ */
+QString LinkLaunch::file() const
+{
+	return d->dest.ld.launch.file_spec;
+}
+
+/**
+ * @brief If true, the destination should be launched in a new window.
+ */
+bool LinkLaunch::newWindow() const
+{
+	return d->dest.ld.launch.new_window;
+}
+
+/**
+ * @brief If true, file() is a URI to launch.
+ */
+bool LinkLaunch::isURI() const
+{
+	return d->dest.ld.launch.is_uri;
+}
+
+/**
+ * @brief The named action to perform.
+ */
+QString LinkNamed::named() const
+{
+	return d->dest.ld.named.named;
 }
 
 /**
@@ -62,7 +112,7 @@ float LinkGoto::zoom() const
  */
 int LinkGotoR::page() const
 {
-	return d->link->dest.ld.gotor.page;
+	return d->dest.ld.gotor.page;
 }
 
 /**
@@ -72,7 +122,7 @@ int LinkGotoR::page() const
  */
 QString LinkGotoR::destination() const
 {
-	return d->link->dest.ld.gotor.dest;
+	return d->dest.ld.gotor.dest;
 }
 
 /**
@@ -81,7 +131,7 @@ QString LinkGotoR::destination() const
  */
 QString LinkGotoR::file() const
 {
-	return d->link->dest.ld.gotor.file_spec;
+	return d->dest.ld.gotor.file_spec;
 }
 
 /**
@@ -89,24 +139,7 @@ QString LinkGotoR::file() const
  */
 bool LinkGotoR::newWindow() const
 {
-	return d->link->dest.ld.gotor.new_window;
-}
-
-/**
- * @brief A UTF-8 encoded URI to launch.
- */
-QString LinkURI::uri() const
-{
-	return d->link->dest.ld.uri.uri;
-}
-
-/**
- * If true, the x and y coords (as ints, in user
- * space) should be appended to the URI before launch.
- */
-bool LinkURI::isMap() const
-{
-	return d->link->dest.ld.uri.is_map;
+	return d->dest.ld.gotor.new_window;
 }
 
 }
