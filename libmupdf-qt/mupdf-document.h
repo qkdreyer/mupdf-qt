@@ -22,6 +22,7 @@ public:
 	int numPages() const;
 	Page * page(int index) const;
 	Outline * outline() const;
+	// TODO QJsonObject toc() const;
 	QString pdfVersion() const;
 	QString title() const;
 	QString author() const;
